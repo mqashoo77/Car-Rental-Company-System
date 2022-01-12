@@ -1,0 +1,87 @@
+new_file = ""
+lines_seen = set()  # holds lines already seen
+infile = open('CarRentalCompleted.txt', "r+")
+for line in infile:
+    if line not in lines_seen:  # not a duplicate
+        new_file += line
+        lines_seen.add(line)
+print(new_file)
+infile.truncate(0)
+outfile = open('CarRentalCompleted.txt', "w")
+outfile.write(new_file)
+outfile.close()
+===================================================================
+
+
+days = input(" How Many Days Do you want this car ... And Don't Worry , We Will Make you Happy :) ")
+    days = int(days)
+
+    if int(days) in range(1, 3):
+        p = price_per_day * days
+        price = p
+        print(" The price for you is " + str(price))
+    elif int(days) in range(3, 11):
+        p = price_per_day * days
+        price = int((price_per_day * days) - (8 / 100 * p))
+        print(" The price for you is " + str(price))
+    elif int(days) in range(11, 20):
+        p = price_per_day * days
+        price = int((price_per_day * days) - (10 / 100 * p))
+        print(" The price for you is " + str(price))
+    elif int(days) in range(20, 31):
+        p = price_per_day * days
+        price = int((price_per_day * days) - (12 / 100 * p))
+        print(" The price for you is " + str(price))
+    else:
+        p = price_per_day * days
+        price = int((price_per_day * days) - (14 / 100 * p))
+        print(" The price for you is " + str(price))
+
+-----------------------------------------------------------------------------------
+
+count = LineOfFile()
+val = False
+chosen_car = [''] * (count + 1)
+chosen_price = [''] * (count + 1)
+i = 1
+for line in file:
+
+    if line == "\n":
+        break
+    else:
+        line = str(line)
+
+        line = line.split(";")
+        date_of_line = str(line[8])
+
+        date_of_line = datetime.strptime(date_of_line, '%d %B %Y')
+        date_of_line = date_of_line.strftime('%Y-%m-%d')
+        date_of_line = date_of_line.split("-")
+        date_of_line = date(int(date_of_line[0]), int(date_of_line[1]), int(date_of_line[2]))
+
+        if date1 == date_of_line or date1 > date_of_line:
+            val = True
+            chosen_car[i] = str(line[4] + ";" + line[5] + ";" + line[6] + ";" + line[7] + ";" + line[8] + ";" + line[9])
+            chosen_price[i] = Price(chosen_car[i])
+            print(" The car number " + str(i) + " is : " + line[5] + " | Model : " + line[
+                6] + "| The car license number is : " + line[4] + "|" + str(chosen_price[i]) + " per Day ")
+
+            i += 1
+
+if val == False:
+    print(" Sorry ... No Car Available Now !! ")
+
+else:
+    f = int(input(" Press The Number That Represents The Car That you Want : "))
+    days = Days()
+    date2 = To_What(date1, days)
+    price = Final_Price(chosen_price[f], days)
+    chosen_car_info = chosen_car[f]
+    chosen_car_info = chosen_car_info.split(";")
+
+    new_rental_info = CompleteInfo(chosen_car_info[0], chosen_car_info[1], chosen_car_info[2], date1, date2, price)
+    print(new_rental_info)
+    file.write(new_rental_info)
+
+file.close()
+
